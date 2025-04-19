@@ -1,47 +1,40 @@
 <html>
     <script>
-        function populateDiv(){
-            const a = document.getElementById("first number").value;
-            const b = document.getElementById("second number").value;
-            //https://sum-server.100xdevs.com/sum?a=1&b=2%22
-            fetch("http://localhost:3000/sum?a=" + a + "&b=" + b)
-                .then(function(response){
-                    response.text().then(function(ans){
-                        document.getElementById("finalsum").innerHTML = ans;
-                    })
-                });
-            // const element = document.getElementById("final sum")
-            // element.innerHTML = parseInt(a) + parseInt(b);
+        let globalId = 1;
+        function Done(todoId)
+        {
+            const parent = document.getElementById(todoId);
+            parent.children[2].innerHTML = "Done!";
+        }
+        function createChild(title, description, id)
+        {
+            const child = document.createElement("div");
+            const childtext = document.createElement("div");
+            childtext.innerHTML = title;
+            const childdesc = document.createElement("div");
+            childdesc.innerHTML = description;
+            const childmark = document.createElement("button");
+            childmark.innerHTML = "Mark as done";
+            childmark.setAttribute("onclick", `Done(${id})`);
+            child.appendChild(childtext);
+            child.appendChild(childdesc);
+            child.appendChild(childmark);
+            child.setAttribute("id", id);
+            return child;
+        }
+        function addTodo(){
+            const title = document.getElementById("title").value;
+            const description = document.getElementById("description").value;
+            const parent = document.getElementById("todos");
+            // const parent = createChild(title, description, id);
+
+            parent.appendChild(createChild(title, description, globalId++));
         }
     </script>
     <body>
-        <input id = "first number" type = "text" placeholder="first number"></input><br></br>
-        <input id = "second number" type = "text" placeholder="second number"></input><br></br>
-        <button onclick = "populateDiv()"> Calculate Sum</button><br></br>
-        <div id="finalsum"></div>
+        <input id = "title" type = "text" placeholder="title"></input><br></br>
+        <input id = "description" type = "text" placeholder="description"></input><br></br>
+        <button onclick="addTodo()">Add todo</button><br></br>
+        <div id = "todos"> </div>
     </body>
 </html>
-
-
-<!-- <html>
-    <style>
-        .container{
-            background-color: red;
-            font-size:100;
-            padding:20;
-            margin: 100;
-            color:green;
-        }
-    </style>
-    <body>
-        <div class = "container">
-            hi there
-        </div>
-        <div class = "container">
-            hi there 2
-        </div>
-        <div class = "container">
-            hi there 3
-        </div>
-    </body>
-</html> -->
